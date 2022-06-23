@@ -3,6 +3,12 @@ require 'multi_json'
 require 'uri'
 require 'net/http'
 
+# command to convert HDR to SDR
+HDR_TO_SDR = 'zscale=t=linear:npl=170, format=gbrpf32le, zscale=p=bt709, tonemap=tonemap=hable:desat=0, zscale=t=bt709:m=bt709:r=tv, format=yuv420p'.freeze
+
+# padding is to prevent width/height not divisible by 2
+PADDING = 'pad=ceil(iw/2)*2:ceil(ih/2)*2'.freeze
+
 module FFMPEG
   class Movie
     attr_reader :path, :duration, :time, :bitrate, :rotation, :creation_time
@@ -95,6 +101,8 @@ module FFMPEG
 
           @rotation = if video_stream.key?(:tags) and video_stream[:tags].key?(:rotate)
                         video_stream[:tags][:rotate].to_i
+                      elsif video_stream.key?(:side_data_list) and video_stream[:side_data_list].first[:rotation]
+                        video_stream[:side_data_list].first[:rotation].to_i
                       else
                         nil
                       end
