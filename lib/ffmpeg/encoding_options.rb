@@ -173,19 +173,24 @@ module FFMPEG
     end
 
     def convert_watermark_filter(value)
-      position = value[:position]
-      padding_x = value[:padding_x] || 10
-      padding_y = value[:padding_y] || 10
-      case position.to_s
-        when "LT"
-          ["-filter_complex", "scale=#{self[:resolution]},overlay=x=#{padding_x}:y=#{padding_y}"]
-        when "RT"
-          ["-filter_complex", "scale=#{self[:resolution]},overlay=x=main_w-overlay_w-#{padding_x}:y=#{padding_y}"]
-        when "LB"
-          ["-filter_complex", "scale=#{self[:resolution]},overlay=x=#{padding_x}:y=main_h-overlay_h-#{padding_y}"]
-        when "RB"
-          ["-filter_complex", "scale=#{self[:resolution]},overlay=x=main_w-overlay_w-#{padding_x}:y=main_h-overlay_h-#{padding_y}"]
-      end
+      position_x = value[:position_x]
+      position_y = value[:position_y]
+      width = value[:width]
+      height = value[:height]
+      opacity = value[:opacity].to_f / 100
+
+      options = []
+      options << HDR_TO_SDR if value[:hdr] # convert to SDR if HDR
+      options << PADDING
+
+      # cropping if Instagram
+      options << "crop=#{value[:video_width]}:#{value[:video_height]}" if value[:video_width] || value[:video_height]
+
+      video_command = "[0:v] #{options.join(', ')} [container]"
+      watermark_command = "[1:v] scale=#{width}:#{height}, format=rgba, colorchannelmixer=aa=#{opacity} [logo]"
+      logo_command = "[container][logo] overlay=#{position_x}:#{position_y}"
+
+      ['-filter_complex', "#{video_command}; #{watermark_command}; #{logo_command}"]
     end
 
     def convert_custom(value)
