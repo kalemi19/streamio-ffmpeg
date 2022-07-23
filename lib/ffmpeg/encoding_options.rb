@@ -185,7 +185,10 @@ module FFMPEG
 
       # cropping if Instagram
       options << "crop=#{value[:video_width]}:#{value[:video_height]}" if value[:video_width] || value[:video_height]
-
+      
+      # scale to maximum width for Instagram
+      options << 'scale=1920:-1' if value[:scale]
+      
       video_command = "[0:v] #{options.join(', ')} [container]"
       watermark_command = "[1:v] scale=#{width}:#{height}, format=rgba, colorchannelmixer=aa=#{opacity} [logo]"
       logo_command = "[container][logo] overlay=#{position_x}:#{position_y}"
