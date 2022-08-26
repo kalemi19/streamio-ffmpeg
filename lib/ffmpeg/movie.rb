@@ -1,6 +1,7 @@
 require 'time'
 require 'multi_json'
 require 'uri'
+require 'addressable/uri'
 require 'net/http'
 
 # command to convert HDR to SDR
