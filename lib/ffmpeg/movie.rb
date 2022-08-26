@@ -20,7 +20,7 @@ module FFMPEG
     UNSUPPORTED_CODEC_PATTERN = /^Unsupported codec with id (\d+) for input stream (\d+)$/
 
     def initialize(path)
-      @path = path
+      @path = Addressable::URI.escape(path)
 
       if remote?
         @head = head
@@ -246,9 +246,10 @@ module FFMPEG
       url = URI(location)
       return unless url.path
 
+      request = Net::HTTP::Get.new(url)
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = url.port == 443
-      response = http.request_head(url.request_uri)
+      response = http.request(request)
 
       case response
         when Net::HTTPRedirection then
