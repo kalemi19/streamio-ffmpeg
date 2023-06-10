@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency("rspec", "~> 3")
   s.add_development_dependency("rake", "~> 10.1")
+  
+  s.add_dependency('dentaku', '~> 3.5.1')
 
   s.files        = Dir.glob("lib/**/*") + %w(README.md LICENSE CHANGELOG)
 end
