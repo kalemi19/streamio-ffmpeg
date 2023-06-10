@@ -11,7 +11,7 @@ HDR_TO_SDR = 'zscale=t=linear:npl=170, format=gbrpf32le, zscale=p=bt709, tonemap
 PADDING = 'pad=ceil(iw/2)*2:ceil(ih/2)*2'.freeze
 
 # SAR conversion
-SAR = "scale='trunc(ih*dar):ih', setsar=1/1".freeze
+SAR = 'scale=trunc(ih*dar):ih, setsar=1/1'.freeze
 
 module FFMPEG
   class Movie
