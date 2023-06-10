@@ -3,6 +3,7 @@ require 'multi_json'
 require 'uri'
 require 'addressable/uri'
 require 'net/http'
+require 'dentaku'
 
 # command to convert HDR to SDR
 HDR_TO_SDR = 'zscale=t=linear:npl=170, format=gbrpf32le, zscale=p=bt709, tonemap=tonemap=hable:desat=0, zscale=t=bt709:m=bt709:r=tv, format=yuv420p'.freeze
