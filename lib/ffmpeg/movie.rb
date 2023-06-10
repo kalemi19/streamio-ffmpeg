@@ -86,11 +86,17 @@ module FFMPEG
         unless video_stream.nil?
           @video_codec = video_stream[:codec_name]
           @colorspace = video_stream[:pix_fmt]
-          @width = video_stream[:width]
-          @height = video_stream[:height]
-          @video_bitrate = video_stream[:bit_rate].to_i
           @sar = video_stream[:sample_aspect_ratio]
           @dar = video_stream[:display_aspect_ratio]
+          @height = video_stream[:height]
+          @width = if @sar
+           calculator = Dentaku::Calculator.new
+           ratio = calculator.evaluate(@sar.sub(':', '/')).to_f
+           @height * ratio
+         else
+           video_stream[:width]
+         end
+          @video_bitrate = video_stream[:bit_rate].to_i
 
           @frame_rate = unless video_stream[:avg_frame_rate] == '0/0'
                           Rational(video_stream[:avg_frame_rate])
