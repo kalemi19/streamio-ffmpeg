@@ -11,8 +11,8 @@ HDR_TO_SDR = 'zscale=t=linear:npl=170, format=gbrpf32le, zscale=p=bt709, tonemap
 # padding is to prevent width/height not divisible by 2
 PADDING = 'pad=ceil(iw/2)*2:ceil(ih/2)*2'.freeze
 
-# SAR conversion
-SAR = 'scale=trunc(ih*dar):ih, setsar=1/1'.freeze
+# DAR conversion
+DAR = 'scale=trunc(ih*dar):ih, setsar=1/1'.freeze
 
 module FFMPEG
   class Movie
@@ -93,9 +93,9 @@ module FFMPEG
           @sar = video_stream[:sample_aspect_ratio]
           @dar = video_stream[:display_aspect_ratio]
           @height = video_stream[:height]
-          @width = if @sar
+          @width = if @dar
            calculator = Dentaku::Calculator.new
-           ratio = calculator.evaluate(@sar.sub(':', '/')).to_f
+           ratio = calculator.evaluate(@dar.sub(':', '/')).to_f
            @height * ratio
          else
            video_stream[:width]
