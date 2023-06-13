@@ -182,7 +182,7 @@ module FFMPEG
       options = []
       options << HDR_TO_SDR if value[:hdr] # convert to SDR if HDR
       options << PADDING
-      options << SAR if value[:sar]
+      options << DAR if value[:dar]
 
       # cropping if Instagram
       options << "crop=#{value[:video_width]}:#{value[:video_height]}" if value[:video_width] || value[:video_height]
