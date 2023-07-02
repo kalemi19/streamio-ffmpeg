@@ -8,11 +8,11 @@ require 'dentaku'
 # command to convert HDR to SDR
 HDR_TO_SDR = 'zscale=t=linear:npl=170, format=gbrpf32le, zscale=p=bt709, tonemap=tonemap=hable:desat=0, zscale=t=bt709:m=bt709:r=tv, format=yuv420p'.freeze
 
-# padding is to prevent width/height not divisible by 2
+# padding is to prevent width/height from not being divisible by 2
 PADDING = 'pad=ceil(iw/2)*2:ceil(ih/2)*2'.freeze
 
-# DAR conversion
-DAR = 'scale=trunc(ih*dar):ih, setsar=1/1'.freeze
+# DAR conversion and preventing width/height from not being divisible by 2
+DAR = 'scale=trunc(ceil((ih*dar)/2)*2):ceil(ih/2)*2, setsar=1/1'.freeze
 
 module FFMPEG
   class Movie
