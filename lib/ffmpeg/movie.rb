@@ -24,7 +24,7 @@ module FFMPEG
 
     UNSUPPORTED_CODEC_PATTERN = /^Unsupported codec with id (\d+) for input stream (\d+)$/
 
-    def initialize(path)
+    def initialize(path, retrying = false)
       @path = Addressable::URI.escape(path)
 
       if remote?
@@ -58,9 +58,8 @@ module FFMPEG
       end
 
       if @metadata.key?(:error)
-
+        return initialize(path, true) unless retrying
         @duration = 0
-
       else
         video_streams = @metadata[:streams].select { |stream| stream.key?(:codec_type) and stream[:codec_type] === 'video' }
         audio_streams = @metadata[:streams].select { |stream| stream.key?(:codec_type) and stream[:codec_type] === 'audio' }
