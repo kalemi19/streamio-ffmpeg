@@ -43,10 +43,7 @@ module FFMPEG
       std_output = ''
       std_error = ''
 
-      Open3.popen3(*command) do |stdin, stdout, stderr|
-        std_output = stdout.read unless stdout.nil?
-        std_error = stderr.read unless stderr.nil?
-      end
+      std_output, std_error, status = Open3.capture3(*command)
 
       fix_encoding(std_output)
       fix_encoding(std_error)
