@@ -12,7 +12,7 @@ HDR_TO_SDR = 'zscale=t=linear:npl=170, format=gbrpf32le, zscale=p=bt709, tonemap
 PADDING = 'pad=ceil(iw/2)*2:ceil(ih/2)*2'.freeze
 
 # DAR conversion and preventing width/height from not being divisible by 2
-DAR = 'scale=trunc(ceil((ih*dar)/2)*2):ceil(ih/2)*2, setsar=1/1'.freeze
+DAR = 'scale=trunc(ceil((ih*dar)/2)*2):ceil(ih/2)*2, setsar=1/1, setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709'.freeze
 
 module FFMPEG
   class Movie
