@@ -180,9 +180,9 @@ module FFMPEG
       opacity = value[:opacity].to_f / 100
 
       options = []
-      options << HDR_TO_SDR if value[:hdr] # convert to SDR if HDR
       options << PADDING
-      options << DAR if value[:dar]
+      options << DAR if value[:dar] # DAR conversion
+      options << HDR_TO_SDR if value[:hdr] # convert to SDR if HDR
 
       # cropping if Instagram
       options << "crop=#{value[:video_width]}:#{value[:video_height]}" if value[:video_width] || value[:video_height]
