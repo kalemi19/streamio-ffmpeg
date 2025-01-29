@@ -5,14 +5,14 @@ require 'addressable/uri'
 require 'net/http'
 require 'dentaku'
 
+# padding is to prevent width/height from not being divisible by 2
+PADDING = 'pad=ceil(iw/2)*2:ceil(ih/2)*2'.freeze
+
 # DAR conversion and preventing width/height from not being divisible by 2
 DAR = 'scale=trunc(ceil((ih*dar)/2)*2):ceil(ih/2)*2, setsar=1/1, setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709'.freeze
 
 # command to convert HDR to SDR
 HDR_TO_SDR = 'colorspace=all=bt709:iall=bt2020'.freeze
-
-# padding is to prevent width/height from not being divisible by 2
-PADDING = 'pad=ceil(iw/2)*2:ceil(ih/2)*2'.freeze
 
 module FFMPEG
   class Movie
