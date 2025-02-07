@@ -9,10 +9,12 @@ require 'dentaku'
 PADDING = 'pad=ceil(iw/2)*2:ceil(ih/2)*2'.freeze
 
 # DAR conversion and preventing width/height from not being divisible by 2
-DAR = 'scale=trunc(ceil((ih*dar)/2)*2):ceil(ih/2)*2, setsar=1/1, setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709'.freeze
+DAR = 'scale=trunc(ceil((ih*dar)/2)*2):ceil(ih/2)*2, setsar=1/1'.freeze
+BT709_DAR = "#{DAR}, setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709".freeze
 
 # command to convert HDR to SDR
-HDR_TO_SDR = 'colorspace=all=bt709:iall=bt2020'.freeze
+HDR_TO_SDR = 'zscale=t=linear:npl=170, format=gbrpf32le, zscale=p=bt709, tonemap=tonemap=hable:desat=0, zscale=t=bt709:m=bt709:r=tv, format=yuv420p'.freeze
+BT709_HDR_TO_SDR = 'colorspace=all=bt709:iall=bt2020'.freeze
 
 module FFMPEG
   class Movie
